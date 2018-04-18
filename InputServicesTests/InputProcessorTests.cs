@@ -49,5 +49,33 @@ namespace InputServicesTests
             Assert.IsTrue(processed);
             Assert.AreEqual(result, expectedResult);
         }
+
+        [TestMethod]
+        public void Provider_Process_should_call_convert_error_handler()
+        {
+            bool called = false;
+            var handler = new TestInputErrorHandler<string, int>((data) => { called = true; }, (data) => { });
+
+            var validator = new TestValidator<int>((data) => true);
+            var inputProcessor = Provider.CreateInputProcessor<string, int, int>(() => "invalid", (x) => x, handler, validator);
+
+            var processed = inputProcessor.Process(out int result);
+
+            Assert.IsTrue(called);
+        }
+
+        [TestMethod]
+        public void Provider_Process_should_call_validation_error_handler()
+        {
+            bool called = false;
+            var handler = new TestInputErrorHandler<int, int>((data) => { }, (data) => { called = true; });
+
+            var validator = new TestValidator<int>((data) => false);
+            var inputProcessor = Provider.CreateInputProcessor<int, int, int>(() => 1, (x) => x, handler, validator);
+
+            var processed = inputProcessor.Process(out int result);
+
+            Assert.IsTrue(called);
+        }
     }
 }
