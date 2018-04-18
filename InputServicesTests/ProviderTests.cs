@@ -13,7 +13,7 @@ namespace InputServicesTests
         {
             var handler = new TestInputErrorHandler<string, string>((data) => { }, (data) => { });
             var validator = new TestValidator<string>((data) => true);
-            var inputProcessor = Provider.CreateInputProcessor<string, string, string>(() => "", (x) => x, handler, validator);
+            var inputProcessor = Provider.CreateInputProcessor<string, string>(() => "", handler, validator);
 
             Assert.IsNotNull(inputProcessor);
         }

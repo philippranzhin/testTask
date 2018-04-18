@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace InputServices.InputProcessor
 {
-    internal class DefaultInputProcessor<TSource, TConverted, TResult> : IInputProcessor<TSource, TConverted, TResult>
+    internal class DefaultInputProcessor<TSource, TConverted> : IInputProcessor<TSource, TConverted>
         where TSource : IConvertible
         where TConverted : IConvertible
     {
-        public Func<TSource> ReadStrategy { get; private set; }
+        public bool Stopped { get; set; } = false;
 
-        public Func<TConverted, TResult> Mapper { get; private set; }
+        public Func<TSource> ReadStrategy { get; private set; }
 
         public IInputErrorHandler<TSource, TConverted> InputErrorHandler { get; private set; }
 
@@ -20,25 +20,29 @@ namespace InputServices.InputProcessor
 
         public DefaultInputProcessor(
             Func<TSource> readStrategy,
-            Func<TConverted, TResult> mapper,
             IInputErrorHandler<TSource, TConverted> inputErrorHandler,
             IValidator<TConverted> validator)
         {
             this.ReadStrategy = readStrategy;
-            this.Mapper = mapper;
             this.InputErrorHandler = inputErrorHandler;
             this.Validator = validator;
         }
 
-        public bool Process(out TResult processedResult)
+        public bool Process(out TConverted processedResult)
         {
-            processedResult = default(TResult);
+            processedResult = default(TConverted);
             TSource readedValue = ReadStrategy();
+
+            if(this.Stopped)
+            {
+                return false;
+            }
+
             if (TryCast<TConverted>(readedValue, out TConverted convertedValue))
             {
                 if (Validator.Validate(convertedValue))
                 {
-                    processedResult = Mapper(convertedValue);
+                    processedResult = convertedValue;
                     return true;
                 }
                 else
@@ -51,6 +55,38 @@ namespace InputServices.InputProcessor
             {
                 InputErrorHandler.HandleError(readedValue);
                 return InputErrorHandler.ShouldRetry ? Process(out processedResult) : false;
+            }
+        }
+
+        public bool ProcessAll<TResult>(uint count, Func<TConverted, TResult> map, out List<TResult> results, bool allowIncompleteResult)
+        {
+            var resultCollection = new List<TResult>((int)count);
+            results = null;
+
+            if (count == 0)
+            {
+                throw new ArgumentException("count shouldn't be equals to 0");
+            }
+
+            for (uint i = 0; i < count; i++)
+            {
+                if (this.Process(out TConverted processedResult))
+                {
+                    resultCollection.Add(map(processedResult));
+                }
+                else if (!allowIncompleteResult)
+                {
+                    return false;
+                }
+            }
+            if(resultCollection.Count > 0)
+            {
+                results = resultCollection;
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 
