@@ -6,18 +6,20 @@ using System.Threading.Tasks;
 
 namespace InputServices.InputProcessor
 {
-    public interface IInputProcessor<TSource, TConverted,TResult> 
-        where TSource:  IConvertible
-        where TConverted: IConvertible
+    public interface IInputProcessor<TSource, TConverted>
+        where TSource : IConvertible
+        where TConverted : IConvertible
     {
-        Func<TSource> ReadStrategy { get; }
+        bool Stopped { get; set; }
 
-        Func<TConverted, TResult> Mapper { get; }
+        Func<TSource> ReadStrategy { get; }
 
         IInputErrorHandler<TSource, TConverted> InputErrorHandler { get; }
 
         IValidator<TConverted> Validator { get; }
 
-        bool Process(out TResult processedResult);
+        bool Process(out TConverted processedResult);
+
+        bool ProcessAll<TResult>(uint count, Func<TConverted, TResult> map, out List<TResult> results, bool allowIncompleteResult);
     }
 }

@@ -9,13 +9,12 @@ namespace InputServices
 {
     public class Provider
     {
-        public static IInputProcessor<TSource, TConverted, TResult> CreateInputProcessor<TSource, TConverted, TResult>(
+        public static IInputProcessor<TSource, TConverted> CreateInputProcessor<TSource, TConverted>(
             Func<TSource> readStrategy,
-            Func<TConverted, TResult> mapper,
             IInputErrorHandler<TSource, TConverted> inputErrorHandler,
             IValidator<TConverted> validator
             )
             where TSource : IConvertible
-            where TConverted : IConvertible => new DefaultInputProcessor<TSource, TConverted, TResult>(readStrategy, mapper, inputErrorHandler, validator);
+            where TConverted : IConvertible => new DefaultInputProcessor<TSource, TConverted>(readStrategy, inputErrorHandler, validator);
     }
 }
