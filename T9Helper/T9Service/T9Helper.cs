@@ -12,37 +12,27 @@ namespace T9Helper.T9Service
     using System;
     using System.Collections.Generic;
 
-    /// <summary>
-    /// The t 9 helper.
-    /// </summary>
-    public class T9Helper
+    /// <inheritdoc />
+    public class T9Helper : IT9Helper
     {
-        public void Help(Func<string> read, Action<string> write)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="T9Helper"/> class.
+        /// </summary>
+        /// <param name="mediator">
+        /// The mediator.
+        /// </param>
+        public T9Helper(IT9Mediator mediator)
         {
-            var mapper = new T9Mapper();
+            this.T9Mediator = mediator;
+        }
 
-            var countValidator =
-                new T9InputValidator<uint>(new Func<uint, bool>((input) => input >= 1 && input <= 100));
+        /// <inheritdoc />
+        public IT9Mediator T9Mediator { get; }
 
-            var countErrorHanlder = CreateErrorHandler<string, uint>();
-
-            var countInput = InputServices.Provider.CreateInputProcessor(Console.ReadLine, countErrorHanlder, countValidator);
-
-            List<Func<string, bool>> messageValidationConditions = new List<Func<string, bool>>(2)
-                                                                       {
-                                                                           new Func<string, bool>((input) => input.Length >= 1 && input.Length <= 1000),
-                                                                           mapper.Contains
-                                                                       };
-
-            var messageValidator = new T9InputValidator<string>(messageValidationConditions);
-
-            var messageErrorHanlder = CreateErrorHandler<string, string>();
-
-            var messageInput = InputServices.Provider.CreateInputProcessor(read, messageErrorHanlder, messageValidator);
-
-            var mediator = new T9Mediator();
-
-            if (mediator.MapT9Inputs(countInput, messageInput, false, mapper.Map, out List<string> results))
+        /// <inheritdoc />
+        public bool Help(Action<string> write, bool allowIncompleteResult)
+        {
+            if (this.T9Mediator.MapT9Inputs(allowIncompleteResult, out List<string> results))
             {
                 int index = 1;
                 foreach (var result in results)
@@ -51,33 +41,10 @@ namespace T9Helper.T9Service
                     index++;
                 }
 
-                read();
+                return true;
             }
-            else
-            {
-                write("Incorrect input");
-                read();
-            }
-        }
 
-        /// <summary>
-        /// The create error handler.
-        /// </summary>
-        /// <typeparam name="TSource">
-        /// the source type
-        /// </typeparam>
-        /// <typeparam name="TConverted">
-        /// the type to convert
-        /// </typeparam>
-        /// <returns>
-        /// The <see>
-        ///         <cref>T9InputErrorHandler</cref>
-        ///     </see>
-        ///     .
-        /// </returns>
-        private T9InputErrorHandler<TSource, TConverted> CreateErrorHandler<TSource, TConverted>()
-        {
-            return new T9InputErrorHandler<TSource, TConverted>((data) => throw new ArgumentException(), (data) => throw new ArgumentException());
+            return false;
         }
     }
 }

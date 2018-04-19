@@ -9,60 +9,51 @@
 
 namespace T9Helper.T9Service
 {
-    using System;
     using System.Collections.Generic;
 
     using InputServices.InputProcessor;
 
-    /// <summary>
-    /// The t 9 helper.
-    /// </summary>
-    public class T9Mediator
+    /// <inheritdoc />
+    public class T9Mediator : IT9Mediator
     {
         /// <summary>
-        /// The map t 9 inputs.
+        /// Initializes a new instance of the <see cref="T9Mediator"/> class.
         /// </summary>
         /// <param name="countInput">
         /// The count input.
         /// </param>
         /// <param name="messagesInput">
-        /// The messages Input.
+        /// The messages input.
         /// </param>
-        /// <param name="allowIncompleteResult">
-        /// The allow incomplete result.
+        /// <param name="mapper">
+        /// The mapper.
         /// </param>
-        /// <param name="map">
-        /// The map.
-        /// </param>
-        /// <param name="results">
-        /// The results.
-        /// </param>
-        /// <returns>
-        /// The <see cref="bool"/>.
-        /// </returns>
-        public bool MapT9Inputs(IInputProcessor<string, uint> countInput, IInputProcessor<string, string> messagesInput, bool allowIncompleteResult, Func<string, string> map,out List<string> results)
+        public T9Mediator(IInputProcessor<string, uint> countInput, IInputProcessor<string, string> messagesInput, IT9Mapper mapper)
+        {
+            this.CountInput = countInput;
+            this.MessagesInput = messagesInput;
+            this.Mapper = mapper;
+        }
+
+        /// <inheritdoc />
+        public IInputProcessor<string, uint> CountInput { get; }
+
+        /// <inheritdoc />
+        public IInputProcessor<string, string> MessagesInput { get; }
+
+        /// <inheritdoc />
+        public IT9Mapper Mapper { get; }
+
+
+        /// <inheritdoc />
+        public bool MapT9Inputs(bool allowIncompleteResult, out List<string> results)
         {
             results = null;
-            try
-            {
-                return countInput.Process(out uint count) && messagesInput.ProcessAll(
+                return this.CountInput.Process(out uint count) && this.MessagesInput.ProcessAll(
                            count,
-                           map,
+                           this.Mapper.Map,
                            out results,
                            allowIncompleteResult);
-            }
-            catch (Exception ex)
-            {
-                if (results != null && results.Count > 0 && allowIncompleteResult)
-                {
-                    return true;
-                }
-                else
-                {
-                    results = null;
-                    return false;
-                }
-            }
         }
     }
 }

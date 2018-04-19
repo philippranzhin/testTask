@@ -42,6 +42,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="T9Service\IT9Helper.cs" />
+    <Compile Include="T9Service\IT9Mapper.cs" />
+    <Compile Include="T9Service\IT9Mediator.cs" />
     <Compile Include="T9Service\T9Helper.cs" />
     <Compile Include="T9Service\T9InputErrorHandler.cs" />
     <Compile Include="T9Service\T9InputValidator.cs" />

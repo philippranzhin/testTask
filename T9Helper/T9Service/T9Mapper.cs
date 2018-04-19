@@ -13,10 +13,8 @@ namespace T9Helper.T9Service
     using System.Linq;
     using System.Text;
 
-    /// <summary>
-    /// The t 9 mapper.
-    /// </summary>
-    public class T9Mapper
+    /// <inheritdoc />
+    public class T9Mapper : IT9Mapper
     {
         /// <summary>
         /// The alphabet size.
@@ -36,15 +34,7 @@ namespace T9Helper.T9Service
             this.GenerateMap();
         }
 
-        /// <summary>
-        /// The contains.
-        /// </summary>
-        /// <param name="data">
-        /// The data.
-        /// </param>
-        /// <returns>
-        /// The <see cref="bool"/>.
-        /// </returns>
+        /// <inheritdoc />
         public bool Contains(string data)
         {
             foreach (char symbol in data)
@@ -58,18 +48,7 @@ namespace T9Helper.T9Service
             return true ;
         }
 
-        /// <summary>
-        /// The map.
-        /// </summary>
-        /// <param name="data">
-        /// The data.
-        /// </param>
-        /// <returns>
-        /// The <see cref="string"/>.
-        /// </returns>
-        /// <exception cref="KeyNotFoundException">
-        ///     throw if there is not map for the <param name="data"/>
-        /// </exception>
+        /// <inheritdoc />
         public string Map(string data)
         {
             var result = new StringBuilder();
@@ -87,6 +66,7 @@ namespace T9Helper.T9Service
                     {
                         result.Append(value);
                     }
+
                     lastSymbol = value.Last();
                 }
                 else
