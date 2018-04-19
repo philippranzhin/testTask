@@ -84,12 +84,13 @@ namespace T9Helper
                 {
                     if (lastSymbol != null && lastSymbol == value.First())
                     {
-                        result.AppendLine($" {value}");
+                        result.Append($" {value}");
                     }
                     else
                     {
-                        result.AppendLine(value);
+                        result.Append(value);
                     }
+                    lastSymbol = value.Last();
                 }
                 else
                 {
