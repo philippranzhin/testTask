@@ -7,16 +7,16 @@ using System.Threading.Tasks;
 
 namespace T9Helper
 {
-    class InputValidator<TSource> : IValidator<TSource>
+    class T9InputValidator<TSource> : IValidator<TSource>
     {
         private List<Func<TSource, bool>> conditions;
 
-        public InputValidator(List<Func<TSource, bool>> conditions)
+        public T9InputValidator(List<Func<TSource, bool>> conditions)
         {
             this.conditions = conditions;
         }
 
-        public InputValidator(Func<TSource, bool> condition)
+        public T9InputValidator(Func<TSource, bool> condition)
         {
             this.conditions = new List<Func<TSource, bool>>() { condition };
         }
