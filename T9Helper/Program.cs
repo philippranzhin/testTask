@@ -1,17 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Program.cs" company="Philipp Ranzhin">
+//   Philipp Ranzhin (c)
+// </copyright>
+// <summary>
+//   Defines the Program type.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace T9Helper
 {
-    class Program
+    /// <summary>
+    /// The program.
+    /// </summary>
+    public class Program
     {
-        static void Main(string[] args)
+        /// <summary>
+        /// The entry point.
+        /// </summary>
+        /// <param name="args">
+        /// The args.
+        /// </param>
+        public static void Main(string[] args)
         {
-
         }
     }
-    
 }

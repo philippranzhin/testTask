@@ -1,33 +1,50 @@
-﻿using InputServices.InputProcessor;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="T9Helper.cs" company="Philipp Ranzhin">
+//   Philipp Ranzhin (c)
+// </copyright>
+// <summary>
+//   Defines the T9Helper type.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace T9Helper
 {
-    class T9Helper
+    using System;
+    using System.Collections.Generic;
+
+    using InputServices.InputProcessor;
+
+    /// <summary>
+    /// The t 9 helper.
+    /// </summary>
+    public class T9Helper
     {
-        bool MapT9Inputs(IInputProcessor<string, uint> countInput, IInputProcessor<string, string> t9input, bool allowIncompleteResult, Func<string, string> t9map,out List<string> results)
+        /// <summary>
+        /// The map t 9 inputs.
+        /// </summary>
+        /// <param name="countInput">
+        /// The count input.
+        /// </param>
+        /// <param name="t9Input">
+        /// The t 9 input.
+        /// </param>
+        /// <param name="allowIncompleteResult">
+        /// The allow incomplete result.
+        /// </param>
+        /// <param name="t9Map">
+        /// The t 9 map.
+        /// </param>
+        /// <param name="results">
+        /// The results.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
+        public bool MapT9Inputs(IInputProcessor<string, uint> countInput, IInputProcessor<string, string> t9Input, bool allowIncompleteResult, Func<string, string> t9Map,out List<string> results)
         {
             results = null;
 
-            if (countInput.Process(out uint count))
-            {
-                if (t9input.ProcessAll(count, t9map, out results, allowIncompleteResult))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                return false;
-            }
-         }
+            return countInput.Process(out uint count) && t9Input.ProcessAll(count, t9Map, out results, allowIncompleteResult);
+        }
     }
 }
