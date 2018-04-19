@@ -1,20 +1,39 @@
-﻿using System;
-using InputServices;
-using InputServicesTests.TestInfra;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="InputProcessorTests.cs" company="Philipp Ranzhin">
+//   Philipp Ranzhin (c)
+// </copyright>
+// <summary>
+//   Defines the InputProcessorTests type.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace InputServicesTests
 {
+    using InputServices;
+
+    using InputServicesTests.TestInfra;
+
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+    /// <summary>
+    /// The input processor tests.
+    /// </summary>
     [TestClass]
     public class InputProcessorTests
     {
-        private TestInputErrorHandler<string, string> handler = new TestInputErrorHandler<string, string>((data) => { }, (data) => { });
+        /// <summary>
+        /// The handler.
+        /// </summary>
+        private readonly TestInputErrorHandler<string, string> errorHandler = new TestInputErrorHandler<string, string>((data) => { }, (data) => { });
 
+        /// <summary>
+        /// The provider process should return false and set default result.
+        /// </summary>
         [TestMethod]
-        public void Provider_Process_should_return_false_and_set_default_result()
+        public void ProviderProcessShouldReturnFalseAndSetDefaultResult()
         {
             var validator = new TestValidator<string>((data) => false);
-            var inputProcessor = Provider.CreateInputProcessor<string, string>(() => "", this.handler, validator);
+            var inputProcessor = Provider.CreateInputProcessor<string, string>(() => string.Empty, this.errorHandler, validator);
 
             var processed = inputProcessor.Process(out string result);
 
@@ -22,8 +41,11 @@ namespace InputServicesTests
             Assert.AreEqual(result, null);
         }
 
+        /// <summary>
+        /// The provider process should return true and set correct result.
+        /// </summary>
         [TestMethod]
-        public void Provider_Process_should_return_true_and_set_correct_result()
+        public void ProviderProcessShouldReturnTrueAndSetCorrectResult()
         {
             var handler = new TestInputErrorHandler<string, int>((data) => { }, (data) => { });
 
@@ -37,8 +59,11 @@ namespace InputServicesTests
             Assert.AreEqual(result, expectedResult);
         }
 
+        /// <summary>
+        /// The provider process should call convert error handler.
+        /// </summary>
         [TestMethod]
-        public void Provider_Process_should_call_convert_error_handler()
+        public void ProviderProcessShouldCallConvertErrorHandler()
         {
             bool called = false;
             var handler = new TestInputErrorHandler<string, int>((data) => { called = true; }, (data) => { });
@@ -51,8 +76,11 @@ namespace InputServicesTests
             Assert.IsTrue(called);
         }
 
+        /// <summary>
+        /// The provider process should call validation error handler.
+        /// </summary>
         [TestMethod]
-        public void Provider_Process_should_call_validation_error_handler()
+        public void ProviderProcessShouldCallValidationErrorHandler()
         {
             bool called = false;
             var handler = new TestInputErrorHandler<int, int>((data) => { }, (data) => { called = true; });

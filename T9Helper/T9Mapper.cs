@@ -1,70 +1,55 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="T9Mapper.cs" company="Philipp Ranzhin">
+//   Philipp Ranzhin (c)
+// </copyright>
+// <summary>
+//   Defines the T9Mapper type.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace T9Helper
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
+    /// <summary>
+    /// The t 9 mapper.
+    /// </summary>
     public class T9Mapper
     {
+        /// <summary>
+        /// The alphabet size.
+        /// </summary>
         private const int AlphabetSize = 27;
 
-        private Dictionary<char, string> map;
+        /// <summary>
+        /// The map.
+        /// </summary>
+        private Dictionary<char, string> alphabetMap;
 
-        private void GenerateMap()
-        {
-            var map = new Dictionary<char, string>(AlphabetSize);
-
-            map.Add('a', "2");
-            map.Add('b', "22");
-            map.Add('c', "222");
-
-            map.Add('d', "3");
-            map.Add('e', "33");
-            map.Add('f', "333");
-
-            map.Add('g', "4");
-            map.Add('h', "44");
-            map.Add('i', "444");
-
-            map.Add('j', "5");
-            map.Add('k', "55");
-            map.Add('l', "555");
-
-            map.Add('m', "6");
-            map.Add('n', "66");
-            map.Add('o', "666");
-
-            map.Add('p', "7");
-            map.Add('q', "77");
-            map.Add('r', "777");
-            map.Add('s', "7777");
-
-            map.Add('t', "8");
-            map.Add('u', "88");
-            map.Add('v', "888");
-
-            map.Add('w', "9");
-            map.Add('x', "99");
-            map.Add('y', "999");
-            map.Add('z', "9999");
-
-            map.Add(' ', "0");
-
-            this.map = map;
-        }
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="T9Mapper"/> class.
+        /// </summary>
         public T9Mapper()
         {
-            this.GenerateMap(); 
+            this.GenerateMap();
         }
 
+        /// <summary>
+        /// The contains.
+        /// </summary>
+        /// <param name="data">
+        /// The data.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
         public bool Contains(string data)
         {
-            foreach(char symbol in data)
+            foreach (char symbol in data)
             {
-                if(!this.map.ContainsKey(symbol))
+                if (!this.alphabetMap.ContainsKey(symbol))
                 {
                     return false;
                 }
@@ -73,6 +58,18 @@ namespace T9Helper
             return true ;
         }
 
+        /// <summary>
+        /// The map.
+        /// </summary>
+        /// <param name="data">
+        /// The data.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
+        /// <exception cref="KeyNotFoundException">
+        ///     throw if there is not map for the <param name="data"/>
+        /// </exception>
         public string Map(string data)
         {
             var result = new StringBuilder();
@@ -80,7 +77,7 @@ namespace T9Helper
 
             foreach (char symbol in data)
             {
-                if (this.map.TryGetValue(symbol, out string value))
+                if (this.alphabetMap.TryGetValue(symbol, out string value))
                 {
                     if (lastSymbol != null && lastSymbol == value.First())
                     {
@@ -99,6 +96,45 @@ namespace T9Helper
             }
 
             return result.ToString();
+        }
+
+
+        /// <summary>
+        /// The generate map.
+        /// </summary>
+        private void GenerateMap()
+        {
+            var map = new Dictionary<char, string>(AlphabetSize)
+                          {
+                              { 'a', "2" },
+                              { 'b', "22" },
+                              { 'c', "222" },
+                              { 'd', "3" },
+                              { 'e', "33" },
+                              { 'f', "333" },
+                              { 'g', "4" },
+                              { 'h', "44" },
+                              { 'i', "444" },
+                              { 'j', "5" },
+                              { 'k', "55" },
+                              { 'l', "555" },
+                              { 'm', "6" },
+                              { 'n', "66" },
+                              { 'o', "666" },
+                              { 'p', "7" },
+                              { 'q', "77" },
+                              { 'r', "777" },
+                              { 's', "7777" },
+                              { 't', "8" },
+                              { 'u', "88" },
+                              { 'v', "888" },
+                              { 'w', "9" },
+                              { 'x', "99" },
+                              { 'y', "999" },
+                              { 'z', "9999" },
+                              { ' ', "0" }
+                          };
+            this.alphabetMap = map;
         }
     }
 }
