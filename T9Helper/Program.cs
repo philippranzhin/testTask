@@ -9,6 +9,14 @@
 
 namespace T9Helper
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+
+    using InputServices.InputProcessor;
+
+    using T9Helper.T9Service;
+
     /// <summary>
     /// The program.
     /// </summary>
@@ -22,6 +30,8 @@ namespace T9Helper
         /// </param>
         public static void Main(string[] args)
         {
+            var helper = new T9Helper();
+            helper.Help(Console.ReadLine, Console.WriteLine);
         }
     }
 }

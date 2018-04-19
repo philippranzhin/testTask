@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace T9Helper
+namespace T9Helper.T9Service
 {
     using System.Collections.Generic;
     using System.Linq;

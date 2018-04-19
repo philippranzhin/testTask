@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace T9Helper
+namespace T9Helper.T9Service
 {
     using System;
 
@@ -19,17 +19,12 @@ namespace T9Helper
         /// <summary>
         /// The type error handle strategy.
         /// </summary>
-        private readonly Action<TSource, string> typeErrorHandleStrategy;
+        private readonly Action<TSource> typeErrorHandleStrategy;
 
         /// <summary>
         /// The validation error handle strategy.
         /// </summary>
-        private readonly Action<TConverted, string> validationErrorHandleStrategy;
-
-        /// <summary>
-        /// The error message.
-        /// </summary>
-        private readonly string errorMessage;
+        private readonly Action<TConverted> validationErrorHandleStrategy;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T9InputErrorHandler{TSource,TConverted}"/> class.
@@ -40,14 +35,10 @@ namespace T9Helper
         /// <param name="validationErrorHandleStrategy">
         /// The validation error handle strategy.
         /// </param>
-        /// <param name="msg">
-        /// The msg.
-        /// </param>
-        public T9InputErrorHandler(Action<TSource, string> typeErrorHandleStrategy, Action<TConverted, string> validationErrorHandleStrategy, string msg)
+        public T9InputErrorHandler(Action<TSource> typeErrorHandleStrategy, Action<TConverted> validationErrorHandleStrategy)
         {
             this.typeErrorHandleStrategy = typeErrorHandleStrategy;
             this.validationErrorHandleStrategy = validationErrorHandleStrategy;
-            this.errorMessage = msg;
         }
 
         /// <inheritdoc />
@@ -56,13 +47,13 @@ namespace T9Helper
         /// <inheritdoc />
         public void HandleError(TSource data)
         {
-            this.typeErrorHandleStrategy(data, this.errorMessage);
+            this.typeErrorHandleStrategy(data);
         }
 
         /// <inheritdoc />
         public void HandleError(TConverted data)
         {
-            this.validationErrorHandleStrategy(data, this.errorMessage);
+            this.validationErrorHandleStrategy(data);
         }
     }
 }
