@@ -48,7 +48,7 @@
     <Compile Include="T9Service\T9Helper.cs" />
     <Compile Include="T9Service\T9InputErrorHandler.cs" />
     <Compile Include="T9Service\T9InputValidator.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="ConsoleT9Helper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="T9Service\T9Mediator.cs" />
     <Compile Include="T9Service\T9Mapper.cs" />

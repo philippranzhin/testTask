@@ -20,7 +20,7 @@ namespace T9Helper
     /// <summary>
     /// The program.
     /// </summary>
-    public class Program
+    public class ConsoleT9Helper
     {
         /// <summary>
         /// The entry point.
@@ -41,7 +41,7 @@ namespace T9Helper
         /// <returns>
         /// The <see cref="IT9Helper"/>.
         /// </returns>
-        private static IT9Helper Init()
+        public static IT9Helper Init()
         {
             var mapper = new T9Mapper();
 

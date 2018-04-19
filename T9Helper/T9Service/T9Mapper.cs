@@ -45,7 +45,7 @@ namespace T9Helper.T9Service
                 }
             }
 
-            return true ;
+            return true;
         }
 
         /// <inheritdoc />
