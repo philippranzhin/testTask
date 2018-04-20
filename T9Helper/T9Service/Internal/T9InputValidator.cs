@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace T9Helper.T9Service
+namespace T9Helper.T9Service.Internal
 {
     using System;
     using System.Collections.Generic;
@@ -15,7 +15,7 @@ namespace T9Helper.T9Service
     using InputServices.InputProcessor;
 
     /// <inheritdoc />
-    public class T9InputValidator<TSource> : IValidator<TSource>
+    internal class T9InputValidator<TSource> : IValidator<TSource>
     {
         /// <summary>
         /// The validation conditions.

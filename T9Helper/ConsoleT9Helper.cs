@@ -16,6 +16,7 @@ namespace T9Helper
     using InputServices.InputProcessor;
 
     using T9Helper.T9Service;
+    using T9Helper.T9Service.Internal;
 
     /// <summary>
     /// The program.
@@ -30,7 +31,7 @@ namespace T9Helper
         /// </param>
         public static void Main(string[] args)
         {
-            var helper = Init();
+            var helper = Init(new ServiceFactory(), Console.ReadLine, Console.WriteLine, "Invalid input");
             helper.Help(Console.WriteLine, true);
             Console.ReadLine();
         }
@@ -38,24 +39,35 @@ namespace T9Helper
         /// <summary>
         /// The init.
         /// </summary>
+        /// <param name="factory">
+        /// The factory.
+        /// </param>
+        /// <param name="read">
+        /// The read.
+        /// </param>
+        /// <param name="write">
+        /// The write.
+        /// </param>
+        /// <param name="errMsg">
+        /// The err Msg.
+        /// </param>
         /// <returns>
         /// The <see cref="IT9Helper"/>.
         /// </returns>
-        public static IT9Helper Init()
+        public static IT9Helper Init(IServiceFactory factory,Func<string> read, Action<string> write, string errMsg)
         {
-            var mapper = new T9Mapper();
+            var mapper = factory.CreateMapper();
 
-            var countErrorHandler = new T9InputErrorHandler<string, uint>((data) => Console.WriteLine("incorrect input"), (data) => Console.WriteLine("incorrect input"));
+            var countErrorHandler = factory.CreateErrorHandler<string, uint>(() => write(errMsg));
 
-            var countValidator =
-                new T9InputValidator<uint>(new Func<uint, bool>((input) => input >= 1 && input <= 100));
+            var countValidator = factory.CreateValidator(new Func<uint, bool>((input) => input >= 1 && input <= 100));
 
             var countInputProcessor = InputServices.Provider.CreateInputProcessor(
-                Console.ReadLine,
+                read,
                 countErrorHandler,
                 countValidator);
 
-            var messageErrorHandler = new T9InputErrorHandler<string, string>((data) => Console.WriteLine("incorrect input"), (data) => Console.WriteLine("incorrect input"));
+            var messageErrorHandler = factory.CreateErrorHandler<string, string>(() => write(errMsg));
 
             List<Func<string, bool>> messageValidationConditions = new List<Func<string, bool>>(2)
                                                                        {
@@ -63,16 +75,16 @@ namespace T9Helper
                                                                            mapper.Contains
                                                                        };
 
-            var messageValidator = new T9InputValidator<string>(messageValidationConditions);
+            var messageValidator = factory.CreateValidator(messageValidationConditions);
 
             var messageInputProcessor = InputServices.Provider.CreateInputProcessor(
-                Console.ReadLine,
+                read,
                 messageErrorHandler,
                 messageValidator);
 
-            var mediator = new T9Mediator(countInputProcessor, messageInputProcessor, mapper);
+            var mediator = factory.CreateMediator(countInputProcessor, messageInputProcessor, mapper);
 
-            return new T9Helper(mediator);
+            return factory.CreateHelper(mediator);
         }
     }
 }
