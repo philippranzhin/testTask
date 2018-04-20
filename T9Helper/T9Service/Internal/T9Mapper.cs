@@ -9,6 +9,7 @@
 
 namespace T9Helper.T9Service.Internal
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
@@ -27,6 +28,11 @@ namespace T9Helper.T9Service.Internal
         private Dictionary<char, string> alphabetMap;
 
         /// <summary>
+        /// The memoized.
+        /// </summary>
+        private Tuple<string, string> memoized;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="T9Mapper"/> class.
         /// </summary>
         public T9Mapper()
@@ -37,20 +43,42 @@ namespace T9Helper.T9Service.Internal
         /// <inheritdoc />
         public bool Contains(string data)
         {
-            foreach (char symbol in data)
-            {
-                if (!this.alphabetMap.ContainsKey(symbol))
-                {
-                    return false;
-                }
-            }
-
-            return true;
+            return this.TryMap(data, out _);
         }
 
         /// <inheritdoc />
         public string Map(string data)
         {
+            if (this.TryMap(data, out string result))
+            {
+                return result;
+            }
+            else
+            {
+                throw new KeyNotFoundException();
+            }
+        }
+
+        /// <summary>
+        /// The try map.
+        /// </summary>
+        /// <param name="data">
+        /// The data.
+        /// </param>
+        /// <param name="mappedValue">
+        /// The mapped value.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
+        private bool TryMap(string data, out string mappedValue)
+        {
+            if (this.memoized != null && this.memoized.Item1 == data)
+            {
+                mappedValue = this.memoized.Item2;
+                return true;
+            }
+
             var result = new StringBuilder();
             char? lastSymbol = null;
 
@@ -71,13 +99,15 @@ namespace T9Helper.T9Service.Internal
                 }
                 else
                 {
-                    throw new KeyNotFoundException();
+                    mappedValue = null;
+                    return false;
                 }
             }
 
-            return result.ToString();
+            mappedValue = result.ToString();
+            this.memoized = new Tuple<string, string>(data, mappedValue);
+            return true;
         }
-
 
         /// <summary>
         /// The generate map.
