@@ -9,13 +9,11 @@
 
 namespace T9HelperTests
 {
-    using System;
     using System.Collections.Generic;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    using T9Helper.T9Service;
-    using T9Helper.T9Service.Internal;
+    using TestInfra;
 
     /// <summary>
     /// The t 9 mapper tests.
@@ -24,17 +22,12 @@ namespace T9HelperTests
     public class T9MapperTests
     {
         /// <summary>
-        /// The factory.
-        /// </summary>
-        private IServiceFactory factory = new ServiceFactory();
-
-        /// <summary>
         /// The contains should returns true.
         /// </summary>
         [TestMethod]
         public void ContainsShouldReturnsTrue()
         {
-            var mapper = this.factory.CreateMapper();
+            var mapper = TestServiceFactory.Factory.CreateMapper();
             var validMessage = "valid message";
 
             Assert.IsTrue(mapper.Contains(validMessage));
@@ -46,7 +39,7 @@ namespace T9HelperTests
         [TestMethod]
         public void ContainsShouldReturnsFalse()
         {
-            var mapper = this.factory.CreateMapper();
+            var mapper = TestServiceFactory.Factory.CreateMapper();
             var invalidMessage = "Invalid message";
 
             Assert.IsFalse(mapper.Contains(invalidMessage));
@@ -58,7 +51,7 @@ namespace T9HelperTests
         [TestMethod]
         public void MapShouldReturnsFoundResult()
         {
-            var mapper = this.factory.CreateMapper();
+            var mapper = TestServiceFactory.Factory.CreateMapper();
             var message = "foo  bar";
 
             Assert.AreEqual(mapper.Map(message), "333666 6660 022 2777");
@@ -70,7 +63,7 @@ namespace T9HelperTests
         [TestMethod]
         public void MapShouldThrowKeyNotFoundException()
         {
-            var mapper = this.factory.CreateMapper();
+            var mapper = TestServiceFactory.Factory.CreateMapper();
             var message = "INVALID";
 
             Assert.ThrowsException<KeyNotFoundException>(() => mapper.Map(message));
