@@ -7,14 +7,14 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace T9Helper.T9Service
+namespace T9Helper.T9Service.Internal
 {
     using System.Collections.Generic;
 
     using InputServices.InputProcessor;
 
     /// <inheritdoc />
-    public class T9Mediator : IT9Mediator
+    internal class T9Mediator : IT9Mediator
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="T9Mediator"/> class.

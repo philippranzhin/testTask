@@ -9,9 +9,12 @@
 
 namespace T9HelperTests
 {
+    using System;
+
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     using T9Helper;
+    using T9Helper.T9Service;
 
     /// <summary>
     /// The console t 9 helper tests.
@@ -25,7 +28,7 @@ namespace T9HelperTests
         [TestMethod]
         public void InitShouldCreateHelper()
         {
-            Assert.IsNotNull(ConsoleT9Helper.Init());
+            Assert.IsNotNull(ConsoleT9Helper.Init(new ServiceFactory(), () => string.Empty, (d) => { }, string.Empty));
         }
     }
 }

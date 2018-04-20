@@ -7,14 +7,14 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace T9Helper.T9Service
+namespace T9Helper.T9Service.Internal
 {
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
 
     /// <inheritdoc />
-    public class T9Mapper : IT9Mapper
+    internal class T9Mapper : IT9Mapper
     {
         /// <summary>
         /// The alphabet size.

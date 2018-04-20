@@ -7,14 +7,14 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace T9Helper.T9Service
+namespace T9Helper.T9Service.Internal
 {
     using System;
 
     using InputServices.InputProcessor;
 
     /// <inheritdoc />
-    public class T9InputErrorHandler<TSource, TConverted> : IInputErrorHandler<TSource, TConverted>
+    internal class T9InputErrorHandler<TSource, TConverted> : IInputErrorHandler<TSource, TConverted>
     {
         /// <summary>
         /// The type error handle strategy.
