@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ConsoleT9HelperTests.cs" company="Philipp Ranzhin">
+// <copyright file="ErrorHandlerTests.cs" company="Philipp Ranzhin">
 //   Philipp Ranzhin (c)
 // </copyright>
 // <summary>
-//   Defines the UnitTest1 type.
+//   Defines the ErrorHandlerTests type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -11,23 +11,26 @@ namespace T9HelperTests
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    using T9Helper;
-
     using TestInfra;
 
     /// <summary>
-    /// The console t 9 helper tests.
+    /// The error handler tests.
     /// </summary>
     [TestClass]
-    public class ConsoleT9HelperTests
+    public class ErrorHandlerTests
     {
         /// <summary>
-        /// The init should create helper.
+        /// The handle error should call strategy.
         /// </summary>
         [TestMethod]
-        public void InitShouldCreateHelper()
+        public void HandleErrorShouldCallStrategy()
         {
-            Assert.IsNotNull(ConsoleT9Helper.Init(TestServiceFactory.Factory, () => string.Empty, (d) => { }, string.Empty));
+            bool called = false;
+            var handler = TestServiceFactory.Factory.CreateErrorHandler<string, int>(() => { called = true; });
+
+            handler.HandleError(1);
+
+            Assert.IsTrue(called);
         }
     }
 }

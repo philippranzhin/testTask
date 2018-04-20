@@ -49,13 +49,25 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConsoleT9HelperTests.cs" />
+    <Compile Include="ErrorHandlerTests.cs" />
+    <Compile Include="InputValidatorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="T9HelperTests.cs" />
     <Compile Include="T9MapperTests.cs" />
+    <Compile Include="T9MediatorTests.cs" />
+    <Compile Include="TestInfra\TestInutProcessor.cs" />
+    <Compile Include="TestInfra\TestMapper.cs" />
+    <Compile Include="TestInfra\TestMediator.cs" />
+    <Compile Include="TestInfra\TestServiceFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\InputServices\InputServices.csproj">
+      <Project>{EA4106DA-5F29-4720-8872-82DB23D0FDBC}</Project>
+      <Name>InputServices</Name>
+    </ProjectReference>
     <ProjectReference Include="..\T9Helper\T9Helper.csproj">
       <Project>{A38C35BC-C513-4D88-851B-F9A87DC24FE6}</Project>
       <Name>T9Helper</Name>
